@@ -181,7 +181,7 @@ const cardsEl=document.getElementById('cards');let showAll=false;
 const drawCards=()=>{cardsEl.innerHTML=trips.slice(0,showAll?trips.length:3).map(x=>`<article class="trip">${scene(x.k,200)}<div class="b"><span class="k">${esc(x.d)}</span><h3>${esc(x.t)}</h3><ul>${x.tags.map(t=>`<li>${esc(t)}</li>`).join('')}</ul><span class="soon">${esc(x.s)}</span></div></article>`).join('');document.getElementById('moreBtn').textContent=showAll?'Zobrazit méně':'Zobrazit všech '+trips.length+' cest';};
 drawCards();document.getElementById('moreBtn').addEventListener('click',()=>{showAll=!showAll;drawCards();});
 const posts=[
- {k:'sea',c:'Z cest · Thajsko 2026',t:'Milý deníčku: Thajsko v číslech',p:'Sloni, had na cestě k vodopádu, bouře na moři a želva George. Pár vtipných momentů z cesty.',u:'/clanky/thajsko-mily-denicku/'},
+ {k:'sea',c:'Z cest · Thajsko · srpen–září 2026',t:'Milý deníčku: Thajsko v číslech',p:'Sloni, had na cestě k vodopádu, bouře na moři a želva George. Pár vtipných momentů z cesty.',u:'/clanky/thajsko-mily-denicku/'},
  {k:'hills',c:'Připravuju · itinerář',t:'Roadtrip Arménií: kláštery a lávaš',p:'Trasa z Jerevanu přes Garni a Geghard až k jezeru Sevan, kde parkovat a kolik stojí vstupy.'},
   {k:'city',c:'Připravuju · rozpočet',t:'Kolik nás doopravdy stál Vietnam',p:'Odhad proti skutečnosti po městech: ubytování, jídlo, doprava i to, kde jsme přeplatili.'}
 ];
