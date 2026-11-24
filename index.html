@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Po vlastní ose</title>
+<meta name="description" content="Itineráře po dnech, ověřené tipy a skutečné ceny z cest. Více zážitků. Méně plánování.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 30%22%3E%3Cpath fill=%22%23B87E60%22 d=%22M12 1C6.2 1 1.8 5.4 1.8 11c0 7.4 9 16.6 9.4 17 .4.4 1.1.4 1.5 0 .4-.4 9.5-9.6 9.5-17C22.2 5.4 17.8 1 12 1zm0 14.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap">
+<style>
+/* VOICE everyday travel journal, calm and personal, practical underneath
+   IDEA a printed travel magazine with a hand-drawn flight route running through it
+   PICTURE illustrated Mediterranean coast at sunset, dashed route and plane across the sky
+   COLOUR ivory ground, deep olive bands, sage and sand support, terracotta accent (brand palette)
+   TYPE Playfair Display headings, Montserrat text, Allura for small handwritten notes
+   LAYOUT laptop: scene full-bleed, title in the sky corner; phone: title, scene, buttons */
+:root{color-scheme:light dark;
+--bg:light-dark(#F6F2EA,#1C221B);--ink:light-dark(#2B3329,#F2EDE3);--soft:light-dark(#5E6556,#B9BCAD);
+--olive:#3C4A39;--sage:#8C927E;--sand:#D8C5B3;--terra:#B87E60;--coffee:#5A4A3E;--ivory:#F6F2EA;
+--card:light-dark(#FFFDF8,#262E24);--line:light-dark(#E3D8CA,#38412F)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Montserrat,system-ui,sans-serif;overflow-x:clip}
+img,svg{max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-height:1.08;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h1{font-size:clamp(38px,5.4vw,64px)}
+h2{font-size:clamp(30px,3.6vw,44px)}
+h3{font-size:22px}
+p{margin:0}
+.wrap{max-width:1240px;margin:0 auto}
+.band{padding-block:clamp(44px,6vw,88px);padding-inline:max(5vw,16px)}
+.hand{font-family:Allura,cursive;font-size:30px;line-height:1;color:var(--terra)}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 22px;border-radius:999px;font:600 15px Montserrat,sans-serif;text-decoration:none;border:1.5px solid var(--olive);background:var(--olive);color:var(--ivory);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--olive)}
+.btn:hover{background:var(--terra);border-color:var(--terra);color:#fff}
+.btn:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+/* header */
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:10px max(5vw,16px)}
+.logo{display:block;width:190px;color:var(--ink);text-decoration:none}
+nav{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:14px;font-weight:500}
+nav a{text-decoration:none;padding:10px 0}
+nav a:hover{color:var(--terra)}
+nav .btn{min-height:40px;padding:0 18px;font-size:14px}
+/* hero */
+.hero{position:relative;min-height:min(84svh,760px);display:grid;align-items:start;overflow:hidden;background:#EBD9C4}
+.hero .scene{position:absolute;inset:0;width:100%;height:100%}
+.hero .txt{position:relative;padding:clamp(40px,7vw,96px) max(5vw,16px) 0;max-width:640px;color:#2B3329}
+.hero .lead{font-size:18px;margin:18px 0 6px;max-width:470px}
+.hero .tag{font:600 13px Montserrat,sans-serif;letter-spacing:.04em;color:#3C4A39;margin-top:20px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero .btn.ghost{color:#3C4A39;border-color:#3C4A39}
+/* why */
+.why{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(28px,5vw,72px);align-items:start}
+.why .intro p{color:var(--soft);margin-top:16px;max-width:440px}
+.pts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.pt{border-top:1.5px solid var(--terra);padding-top:16px}
+.pt svg{width:38px;height:38px;color:var(--olive)}
+:root[data-theme=dark] .pt svg{color:var(--sand)}
+.pt h3{font-size:20px;margin:10px 0 8px}
+.pt p{font-size:15px;color:var(--soft)}
+/* next stop */
+.next{background:var(--olive);color:var(--ivory)}
+.next .head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:34px}
+.next .head p{max-width:460px;color:#D9D6C8;margin-top:12px}
+.ns{font-family:"Playfair Display",serif;font-size:clamp(40px,5vw,60px);line-height:1;font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.trip{background:#F6F2EA;color:#2B3329;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.trip svg{display:block;width:100%;height:200px}
+.trip .b{padding:18px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.trip .k{font-size:13px;font-weight:600;color:#B87E60}
+.trip ul{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.trip li{font-size:13px;padding:3px 10px;border-radius:999px;background:#E9DFD2;white-space:nowrap}
+.trip .soon{margin-top:auto;padding-top:12px;font-size:13px;color:#5E6556}
+.next .btn{background:var(--ivory);color:var(--olive);border-color:var(--ivory)}
+.next .btn:hover{background:var(--terra);border-color:var(--terra);color:#fff}
+/* blog */
+.posts{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;margin-top:30px}
+.post{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none}
+.post svg{display:block;width:100%;height:150px}
+.post.big svg{height:100%;min-height:260px}
+.post .b{padding:16px 20px 20px}
+.post .k{font-size:13px;color:var(--terra);font-weight:600}
+.post h3{margin:6px 0 8px}
+.post p{font-size:15px;color:var(--soft)}
+.side{display:grid;gap:22px}
+.side .post{flex-direction:row}
+.side .post svg{width:38%;height:auto;flex:none}
+.note{font-size:13px;color:var(--soft);margin-top:16px}
+.sect{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+/* destinations */
+.dest{background:color-mix(in srgb,var(--sand) 38%,var(--bg))}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chips a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);text-decoration:none;font-weight:500;font-size:15px}
+.chips a svg{width:14px;height:18px;color:var(--terra)}
+.chips a:hover{border-color:var(--terra)}
+.chips small{color:var(--soft);font-size:13px}
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,5vw,72px);align-items:center}
+.photo{aspect-ratio:4/5;border-radius:200px 200px 16px 16px;overflow:hidden;background:var(--sand)}
+.photo svg{width:100%;height:100%;display:block}
+.about p{margin-top:14px;color:var(--soft);max-width:560px}
+.about p:first-of-type{color:var(--ink);font-size:18px}
+/* newsletter + footer */
+.join{background:var(--coffee);color:var(--ivory);text-align:left}
+.join .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:center}
+.join p{color:#E2D6C8;margin-top:10px}
+form{display:flex;gap:10px;flex-wrap:wrap}
+input{flex:1 1 220px;min-height:48px;border-radius:999px;border:1.5px solid #CDBBA8;background:#F6F2EA;color:#2B3329;padding:0 20px;font:16px Montserrat,sans-serif}
+.join .btn{background:var(--terra);border-color:var(--terra)}
+.join .btn:hover{background:var(--ivory);color:var(--coffee);border-color:var(--ivory)}
+#ok{font-size:14px;margin-top:10px;min-height:1.4em;color:#F0E2D2}
+footer{padding:36px max(5vw,16px);border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--soft)}
+footer .logo{width:150px}
+footer nav{gap:4px 18px}
+@media(max-width:900px){.cards{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.cards .trip:last-child{display:none}.why{grid-template-columns:1fr}.posts{grid-template-columns:1fr}.post.big svg{min-height:200px;height:200px}}
+@media(max-width:720px){.pts{grid-template-columns:1fr}.about{grid-template-columns:1fr}.photo{max-width:320px}.join .wrap{grid-template-columns:1fr}}
+@media(max-width:600px){
+ nav.main a:not(.btn){display:none}
+ .hero{display:block;min-height:0;background:var(--bg)}
+ .hero .scene{position:relative;display:block;height:300px;margin-top:20px}
+ .hero .txt{padding-top:28px;color:var(--ink)}
+ .hero .tag{color:var(--ink)}
+ .hero .btn.ghost{color:var(--ink);border-color:var(--ink)}
+ .cards{grid-template-columns:1fr}.cards .trip:last-child{display:flex}
+ .side .post{flex-direction:column}.side .post svg{width:100%;height:140px}
+}
+@media(prefers-reduced-motion:no-preference){.plane-fly{animation:fly 2.4s cubic-bezier(.3,.6,.3,1) both}@keyframes fly{from{offset-distance:0%}to{offset-distance:100%}}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <symbol id="plane" viewBox="0 0 24 24"><path fill="currentColor" d="M21.5 11.2c.9.2.9 1.4 0 1.6l-5.8 1.1-4.6 6.6c-.3.4-.7.6-1.2.6H8.8l2.3-7-4.8.7-1.7 2.2H3.3l1-3.7-1-3.7h1.3l1.7 2.2 4.8.7-2.3-7h1.1c.5 0 .9.2 1.2.6l4.6 6.6z"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 30"><path fill="currentColor" d="M12 1C6.2 1 1.8 5.4 1.8 11c0 7.4 9 16.6 9.4 17 .4.4 1.1.4 1.5 0 .4-.4 9.5-9.6 9.5-17C22.2 5.4 17.8 1 12 1zm0 14.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></symbol>
+  <symbol id="palm" viewBox="0 0 120 200"><path d="M62 200c-6-50-4-100 6-140" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round"/><g fill="currentColor"><path d="M68 60C50 40 25 38 4 52c22-4 42 2 64 8z"/><path d="M68 60c6-22 26-36 50-34-20 6-36 18-50 34z"/><path d="M68 60C60 36 40 20 16 22c20 8 38 20 52 38z"/><path d="M68 60c20-10 42-6 52 14-18-10-34-12-52-14z"/><path d="M68 60c-14 4-30 18-34 40 10-18 20-30 34-40z"/></g></symbol>
+ </defs>
+</svg>
+
+<header>
+ <div class="bar">
+  <a class="logo" href="#" aria-label="Po vlastní ose, úvod">
+   <svg viewBox="0 0 220 64" role="img"><title>po vlastní ose.</title>
+    <path d="M18 24 C 40 2, 90 4, 120 14 S 170 20, 188 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 4" opacity=".7"/>
+    <use href="#pin" x="10" y="12" width="14" height="17" style="color:var(--terra)"/>
+    <use href="#plane" x="184" y="0" width="20" height="20" transform="rotate(-14 194 10)"/>
+    <text x="0" y="52" font-family="Playfair Display, Georgia, serif" font-size="30" font-weight="500" fill="currentColor">po vlastní ose.</text>
+   </svg>
+  </a>
+  <nav class="main" aria-label="Hlavní menu">
+   <a href="#destinace">Destinace</a><a href="#itinerare">Itineráře</a><a href="#proc">Tipy</a><a href="#blog">Blog</a><a href="#o-mne">O mně</a>
+   <a class="btn" href="#itinerare">Next stop</a>
+  </nav>
+ </div>
+</header>
+
+<section class="hero" aria-labelledby="h1">
+ <div class="txt">
+  <span class="hand">Cestuj po svém.</span>
+  <h1 id="h1">Každá cesta začíná dobrým plánem.</h1>
+  <p class="lead">Itineráře po dnech, ověřené tipy a skutečné ceny z našich cest. Ušetři čas s plánováním a užij si víc toho, kvůli čemu cestuješ.</p>
+  <p class="tag">Více zážitků. Méně plánování.</p>
+  <div class="cta"><a class="btn" href="#itinerare">Prohlédnout itineráře</a><a class="btn ghost" href="#blog">Číst blog</a></div>
+ </div>
+ <svg class="scene" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+   <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E7DA"/><stop offset=".55" stop-color="#EBCDB2"/><stop offset="1" stop-color="#D99C79"/></linearGradient>
+   <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9AA08E"/><stop offset="1" stop-color="#5E6A58"/></linearGradient>
+   <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7D9B8"/><stop offset="1" stop-color="#E7A47F"/></linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#sky)"/>
+  <circle cx="860" cy="520" r="120" fill="url(#glow)" opacity=".9"/>
+  <path d="M0 560 Q300 540 600 556 T1200 548 V760 H0z" fill="#B7B3A0" opacity=".55"/>
+  <rect y="560" width="1200" height="200" fill="url(#sea)"/>
+  <g fill="#F3D2B2" opacity=".55"><rect x="760" y="580" width="200" height="3" rx="2"/><rect x="800" y="600" width="120" height="3" rx="2"/><rect x="830" y="622" width="70" height="3" rx="2"/></g>
+  <!-- cliff with town -->
+  <path d="M1200 360 C1120 370 1060 420 1020 470 C990 510 960 540 930 570 L1200 600z" fill="#5A4A3E"/>
+  <path d="M1200 360 C1150 366 1110 392 1080 420 L1200 440z" fill="#6E5A4A"/>
+  <g id="town"></g>
+  <!-- foreground headland -->
+  <path d="M0 640 C120 600 260 610 380 650 C460 676 520 720 560 760 H0z" fill="#3C4A39"/>
+  <path d="M0 668 C140 640 280 650 400 690 L470 760 H0z" fill="#2F3A2D"/>
+  <use href="#palm" x="250" y="430" width="140" height="240" style="color:#2F3A2D"/>
+  <use href="#palm" x="330" y="500" width="100" height="170" style="color:#3C4A39" transform="scale(-1 1) translate(-760 0)"/>
+  <!-- route -->
+  <path id="route" d="M640 330 C760 220 900 300 980 230 S1110 120 1160 150" fill="none" stroke="#3C4A39" stroke-width="2.4" stroke-dasharray="7 9" stroke-linecap="round" opacity=".75"/>
+  <use href="#pin" x="626" y="300" width="28" height="35" style="color:#B87E60"/>
+  <g class="plane-fly" style="offset-path:path('M640 330 C760 220 900 300 980 230 S1110 120 1160 150');offset-rotate:auto;offset-distance:100%"><use href="#plane" x="-18" y="-18" width="36" height="36" style="color:#3C4A39"/></g>
+  <text x="700" y="410" font-family="Allura, cursive" font-size="40" fill="#5A4A3E" opacity=".85">next stop…</text>
+ </svg>
+</section>
+
+<section class="band" id="proc">
+ <div class="wrap why">
+  <div class="intro">
+   <h2>Proč s plánem uvidíš víc</h2>
+   <p>Bez plánu se na místě hodně hledá: kam jít, jak se tam dostat, kde jíst. Dobrý itinerář tě nesvazuje, jen ti vrátí čas na to podstatné.</p>
+  </div>
+  <div class="pts">
+   <div class="pt"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="20" cy="20" r="15"/><path d="M20 11v9l6 4"/></svg><h3>Nehledáš, zažíváš</h3><p>Místa jsou seřazená po dnech a podle trasy, takže nepřejíždíš sem a tam.</p></div>
+   <div class="pt"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="11" width="28" height="19" rx="3"/><path d="M6 17h28M12 24h6"/></svg><h3>Víš, kolik to stojí</h3><p>Skutečné ceny ubytování, vstupů a dopravy, ne odhady z cizích webů.</p></div>
+   <div class="pt"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 30 C14 18 22 26 32 10" stroke-dasharray="3 3"/><circle cx="8" cy="30" r="3"/><path d="M28 10h4v4"/></svg><h3>Poučíš se z našich chyb</h3><p>U každé cesty píšu, co se vyplatilo a co bych příště udělala jinak.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="band next" id="itinerare">
+ <div class="wrap">
+  <div class="head">
+   <div><div class="ns">next stop.</div><p>Itineráře, které tě posunou dál: program po dnech, mapa, rozpočet a praktické tipy z cest, které jsme opravdu absolvovali.</p></div>
+  </div>
+  <div class="cards" id="cards"></div>
+ </div>
+</section>
+
+<section class="band" id="blog">
+ <div class="wrap">
+  <div class="sect"><h2>Z cest</h2></div>
+  <div class="posts" id="posts"></div>
+  <p class="note">První články právě píšu, brzy tu budou.</p>
+ </div>
+</section>
+
+<section class="band dest" id="destinace">
+ <div class="wrap">
+  <h2>Kde jsme byli</h2>
+  <div class="chips" id="chips"></div>
+ </div>
+</section>
+
+<section class="band" id="o-mne">
+ <div class="wrap about">
+  <div class="photo"><svg viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" aria-label="Místo pro tvou fotku"><rect width="320" height="400" fill="#D8C5B3"/><circle cx="220" cy="140" r="56" fill="#E9B993"/><path d="M0 300 C80 270 200 280 320 250 V400 H0z" fill="#8C927E"/><path d="M0 340 C100 320 220 330 320 310 V400 H0z" fill="#3C4A39"/><text x="160" y="380" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" fill="#F6F2EA">sem přijde tvoje fotka</text></svg></div>
+  <div>
+   <span class="hand">Ahoj!</span>
+   <h2>Jsem Marie a plánování mě baví</h2>
+   <p>V práci připravuju stavby, ve volnu cesty. Obojí stojí na stejné věci: dobrém plánu, se kterým pak všechno funguje.</p>
+   <p>Cestujeme spolu s přítelem nejčastěji autem a na vlastní pěst. Máme rádi památky, kostely a kláštery, jeskyně, vodopády, krátké túry a místní jídlo, muzea si necháváme na deštivé dny. Tady sdílím itineráře, rozpočty a tipy, které nám ušetřily čas i peníze.</p>
+  </div>
+ </div>
+</section>
+
+<section class="band join">
+ <div class="wrap">
+  <div><h2>Kam vyrazíme příště?</h2><p>První itineráře Next stop budou brzy ke stažení. Program po dnech, mapa i rozpočet v jednom.</p></div>
+  <div>
+   <a class="btn" href="#itinerare">Prohlédnout Next stop</a>
+  </div>
+ </div>
+</section>
+
+<footer>
+ <div class="wrap">
+  <a class="logo" href="#" aria-label="Po vlastní ose, úvod"><svg viewBox="0 0 220 64"><use href="#pin" x="10" y="12" width="14" height="17" style="color:var(--terra)"/><path d="M18 24 C 40 2, 90 4, 120 14 S 170 20, 188 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 4" opacity=".7"/><use href="#plane" x="184" y="0" width="20" height="20"/><text x="0" y="52" font-family="Playfair Display, Georgia, serif" font-size="30" fill="currentColor">po vlastní ose.</text></svg></a>
+  <nav aria-label="Patička"><a href="#destinace">Destinace</a><a href="#itinerare">Itineráře</a><a href="#blog">Blog</a><a href="#o-mne">O mně</a></nav>
+  <span>© 2026 Po vlastní ose · Více zážitků. Méně plánování.</span>
+ </div>
+</footer>
+
+<script>
+{
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// small illustrated scenes in brand colours, one per kind of place
+const scene=(k,h)=>{
+ const sky={sea:['#F1E3D3','#E3B596'],hills:['#EFE6DA','#CFC6B2'],city:['#F0E4D6','#DDBFA6'],rice:['#EEE9DC','#C9CDB6']}[k];
+ const id='g'+Math.random().toString(36).slice(2,7);
+ let g=`<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient></defs><rect width="400" height="${h}" fill="url(#${id})"/>`;
+ if(k==='sea')g+=`<circle cx="290" cy="${h*.62}" r="40" fill="#EFC4A0"/><rect y="${h*.66}" width="400" height="${h}" fill="#7E8873"/><path d="M0 ${h*.58} C60 ${h*.5} 120 ${h*.5} 170 ${h*.66} H0z" fill="#B88A6A"/><g fill="#EDE2D2">${[0,1,2,3,4].map(i=>`<rect x="${14+i*28}" y="${h*.5+((i*7)%14)}" width="22" height="${18+i%3*6}"/>`).join('')}</g><circle cx="74" cy="${h*.46}" r="13" fill="#D8C5B3"/><use href="#palm" x="320" y="${h*.36}" width="60" height="${h*.64}" style="color:#3C4A39"/>`;
+ if(k==='hills')g+=`<path d="M0 ${h*.62} C80 ${h*.4} 150 ${h*.44} 220 ${h*.6} S340 ${h*.42} 400 ${h*.56} V${h}H0z" fill="#8C927E"/><path d="M0 ${h*.78} C120 ${h*.64} 240 ${h*.7} 400 ${h*.66} V${h}H0z" fill="#3C4A39"/><g fill="#B87E60"><rect x="250" y="${h*.5}" width="34" height="26"/><path d="M246 ${h*.5} L267 ${h*.38} L288 ${h*.5}z"/><rect x="262" y="${h*.32}" width="10" height="${h*.08}"/><path d="M260 ${h*.33} L267 ${h*.25} L274 ${h*.33}z"/></g>`;
+ if(k==='city')g+=`<rect y="${h*.72}" width="400" height="${h}" fill="#8C927E"/>${[0,1,2,3,4,5,6,7].map(i=>{const w=36+(i*13)%22,x=i*50,t=h*(.42+((i*37)%20)/100);return `<rect x="${x}" y="${t}" width="${w}" height="${h*.72-t}" fill="${['#D8C5B3','#B87E60','#EDE2D2','#5A4A3E'][i%4]}"/>`}).join('')}<path d="M180 ${h*.42} a24 24 0 0 1 48 0z" fill="#3C4A39"/><rect x="200" y="${h*.28}" width="8" height="${h*.1}" fill="#3C4A39"/>`;
+ if(k==='rice')g+=[0,1,2,3,4].map(i=>`<path d="M0 ${h*(.48+i*.11)} C100 ${h*(.42+i*.11)} 260 ${h*(.54+i*.11)} 400 ${h*(.46+i*.11)} V${h}H0z" fill="${['#C9CDB6','#A9AE97','#8C927E','#6A7360','#3C4A39'][i]}"/>`).join('')+`<path d="M250 ${h*.4} l30 0 -6 10 -18 0z" fill="#5A4A3E"/><path d="M262 ${h*.4} l3 -18" stroke="#5A4A3E" stroke-width="2"/>`;
+ g+=`<path d="M30 ${h*.24} C120 ${h*.06} 220 ${h*.3} 360 ${h*.12}" fill="none" stroke="#3C4A39" stroke-width="1.6" stroke-dasharray="4 6" opacity=".6"/><use href="#plane" x="350" y="${h*.04}" width="22" height="22" style="color:#3C4A39"/>`;
+ return `<svg viewBox="0 0 400 ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${g}</svg>`;
+};
+const trips=[
+ {k:'hills',t:'Next stop: Arménie',d:'5 dní · roadtrip autem · listopad 2026',tags:['Kláštery','Garni a Geghard','Jezero Sevan','Kurz vaření'],s:'Itinerář ve výrobě'},
+ {k:'rice',t:'Next stop: Vietnam',d:'Sever až jih · ubytování a ceny po městech',tags:['Ha Long','Rýžové terasy','Street food','Rozpočet'],s:'Brzy ke stažení'},
+ {k:'sea',t:'Next stop: Malta a Gozo',d:'12 dní · autobusem a na scooteru · září 2023',tags:['Blue Hole','Mdina','Katakomby','Pláže'],s:'Brzy ke stažení'}
+];
+document.getElementById('cards').innerHTML=trips.map(x=>`<article class="trip">${scene(x.k,200)}<div class="b"><span class="k">${esc(x.d)}</span><h3>${esc(x.t)}</h3><ul>${x.tags.map(t=>`<li>${esc(t)}</li>`).join('')}</ul><span class="soon">${esc(x.s)}</span></div></article>`).join('');
+const posts=[
+ {k:'hills',c:'Připravuju · itinerář',t:'Roadtrip Arménií: 5 dní, kláštery a lávaš',p:'Trasa z Jerevanu přes Garni a Geghard až k jezeru Sevan, kde parkovat a kolik stojí vstupy.'},
+ {k:'sea',c:'Připravuju · z cest',t:'Gozo autobusem a zpátky na scooteru',p:'Victoria, Blue Hole a schody v Xlendi, které vedou do malé jeskyně s výhledem.'},
+ {k:'city',c:'Připravuju · rozpočet',t:'Kolik nás doopravdy stál Vietnam',p:'Odhad proti skutečnosti po městech: ubytování, jídlo, doprava i to, kde jsme přeplatili.'}
+];
+document.getElementById('posts').innerHTML=`<div class="post big">${scene(posts[0].k,300)}<div class="b"><span class="k">${esc(posts[0].c)}</span><h3>${esc(posts[0].t)}</h3><p>${esc(posts[0].p)}</p></div></div><div class="side">${posts.slice(1).map(x=>`<div class="post">${scene(x.k,220)}<div class="b"><span class="k">${esc(x.c)}</span><h3>${esc(x.t)}</h3><p>${esc(x.p)}</p></div></div>`).join('')}</div>`;
+const dest=[['Arménie','2026'],['Vietnam',''],['Malta','2023'],['Itálie',''],['Balkán',''],['Polsko',''],['Švédsko',''],['Dánsko',''],['Lotyšsko',''],['Anglie','']];
+document.getElementById('chips').innerHTML=dest.map(([n,y])=>`<a href="#destinace"><svg viewBox="0 0 24 30"><use href="#pin"/></svg>${esc(n)}${y?` <small>${esc(y)}</small>`:''}</a>`).join('');
+// town on the cliff in the hero
+const town=document.getElementById('town');let s=7,h='';
+const rnd=()=>(s=s*16807%2147483647)/2147483647;
+for(let i=0;i<14;i++){const x=1000+i*15+rnd()*8,y=420+(13-i)*-4+rnd()*20+Math.max(0,(1040-x))*.9,w=16+rnd()*14,hh=14+rnd()*18;h+=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" fill="${rnd()>.5?'#EFE2D0':'#D8C5B3'}"/><rect x="${x+4}" y="${y+5}" width="4" height="5" fill="#5A4A3E" opacity=".6"/>`}
+town.innerHTML=h;
+}
+</script>
+</body>
+</html>
